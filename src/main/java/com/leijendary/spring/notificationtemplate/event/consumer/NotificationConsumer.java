@@ -1,8 +1,8 @@
 package com.leijendary.spring.notificationtemplate.event.consumer;
 
 import com.leijendary.schema.NotificationSchema;
-import com.leijendary.spring.notificationtemplate.data.SmsSendData;
-import com.leijendary.spring.notificationtemplate.service.SmsService;
+import com.leijendary.spring.notificationtemplate.service.AwsSmsService;
+import com.leijendary.spring.notificationtemplate.service.VendorSmsService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.kafka.streams.kstream.KStream;
@@ -16,7 +16,8 @@ import java.util.function.Consumer;
 @Slf4j
 public class NotificationConsumer {
 
-    private final SmsService smsService;
+    private final AwsSmsService awsSmsService;
+    private final VendorSmsService vendorSmsService;
 
     @Bean
     public Consumer<KStream<String, NotificationSchema>> notificationSms() {
@@ -25,11 +26,12 @@ public class NotificationConsumer {
 
             final var to = value.getTo();
             final var content = value.getContent();
-            final var smsData = new SmsSendData();
-            smsData.setTo(to);
-            smsData.setMessage(content);
 
-            smsService.send(smsData);
+            if (to.startsWith("+63")) {
+                awsSmsService.send(to, content);
+            } else {
+                vendorSmsService.send(to, content);
+            }
         });
     }
 
