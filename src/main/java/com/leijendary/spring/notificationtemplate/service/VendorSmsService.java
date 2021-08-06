@@ -6,8 +6,10 @@ import com.leijendary.spring.notificationtemplate.data.SmsSendData;
 import com.leijendary.spring.notificationtemplate.exception.SmsNotSentException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Service;
 
+@Profile("!aws")
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -21,10 +23,9 @@ public class VendorSmsService extends AbstractService implements SmsService {
         final var username = smsProperties.getUsername();
         final var password = smsProperties.getPassword();
         final var smsData = new SmsSendData();
-        smsData.setUnicode("u");
         smsData.setSender(sender);
-        smsData.setUser(username);
-        smsData.setPass(password);
+        smsData.setUsername(username);
+        smsData.setPassword(password);
         smsData.setTo(to);
         smsData.setMessage(message);
 

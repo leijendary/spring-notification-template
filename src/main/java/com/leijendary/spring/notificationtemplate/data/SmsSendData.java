@@ -5,10 +5,9 @@ import lombok.Data;
 @Data
 public class SmsSendData {
 
-    private String unicode;
     private String sender;
-    private String user;
-    private String pass;
+    private String username;
+    private String password;
     private String to;
     private String message;
 }
