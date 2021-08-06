@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: create-notification-table
+      author: Leijendekker
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: column_1
+                  type: varchar(100)
+              - column:
+                  name: column_2
+                  type: int
+              - column:
+                  name: created_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                  defaultValueDate: current_timestamp
+              - column:
+                  name: created_by
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: last_modified_date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                  defaultValueDate: current_timestamp
+              - column:
+                  name: last_modified_by
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+            tableName: sample_table
+  - changeSet:
+      id: sample-table-primary-key
+      author: Leijendekker
+      changes:
+        - addPrimaryKey:
+            columnNames: id
+            constraintName: pk_sample_table
+            tableName: sample_table
+            validate: true
+  - changeSet:
+      id: sample-table-id-unique-constraint
+      author: Leijendekker
+      changes:
+        - addUniqueConstraint:
+            columnNames: id
+            constraintName: uidx_sample_table_id
+            tableName: sample_table
+            validate: true
