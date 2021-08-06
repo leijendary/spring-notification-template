@@ -1,6 +1,6 @@
 {
   "type": "record",
-  "namespace": "com.leijendary.spring.notificationtemplate.event.schema",
+  "namespace": "com.leijendary.schema",
   "name": "NotificationSchema",
   "fields": [
     {

@@ -9,7 +9,7 @@ import java.io.Serializable;
 
 public class SnowflakeIdGenerator implements IdentifierGenerator {
 
-    public static final String STRATEGY = "com.leijendary.spring.microservicetemplate.generator.SnowflakeIdGenerator";
+    public static final String STRATEGY = "com.leijendary.spring.notificationtemplate.generator.SnowflakeIdGenerator";
 
     private static final SnowflakeIdWorker WORKER = new SnowflakeIdWorker();
 

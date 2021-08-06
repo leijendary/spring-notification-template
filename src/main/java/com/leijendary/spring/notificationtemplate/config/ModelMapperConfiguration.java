@@ -1,6 +1,5 @@
 package com.leijendary.spring.notificationtemplate.config;
 
-import com.leijendary.spring.notificationtemplate.factory.mapper.SampleRequestV1ToSampleDataMap;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.module.jsr310.Jsr310Module;
 import org.springframework.context.annotation.Bean;
@@ -22,7 +21,6 @@ public class ModelMapperConfiguration {
         modelMapper.registerModule(new Jsr310Module(config));
         // Matching strategy set to "STRICT" to avoid mismatching of fields
         modelMapper.getConfiguration().setMatchingStrategy(STRICT);
-        modelMapper.addMappings(new SampleRequestV1ToSampleDataMap());
 
         return modelMapper;
     }

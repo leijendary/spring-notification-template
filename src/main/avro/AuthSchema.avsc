@@ -1,0 +1,35 @@
+{
+  "type": "record",
+  "namespace": "com.leijendary.schema",
+  "name": "AuthSchema",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "userId",
+      "type": "long"
+    },
+    {
+      "name": "username",
+      "type": "string"
+    },
+    {
+      "name": "audience",
+      "type": "string"
+    },
+    {
+      "name": "type",
+      "type": "string"
+    },
+    {
+      "name": "deviceId",
+      "type": "string"
+    },
+    {
+      "name": "createdDate",
+      "type": "string"
+    }
+  ]
+}

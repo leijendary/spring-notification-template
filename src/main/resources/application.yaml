@@ -37,6 +37,11 @@ cors:
     - trace
   exposedHeaders: '*'
 
+sms:
+  sender:
+  username:
+  password:
+
 spring:
   application:
     name: ${info.app.name}
@@ -74,8 +79,8 @@ spring:
       client:
         simple:
           instances:
-            google:
-              - uri: https://google.com
+            sms:
+              - uri:
     loadbalancer:
       retry:
         maxRetriesOnSameServiceInstance: 3

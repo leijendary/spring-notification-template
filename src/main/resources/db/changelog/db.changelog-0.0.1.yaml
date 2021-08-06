@@ -1,59 +1,78 @@
 databaseChangeLog:
   - changeSet:
-      id: create-notification-table
-      author: Leijendekker
+      id: 1628230435480-1
+      author: Leijendary (generated)
       changes:
         - createTable:
             columns:
               - column:
+                  constraints:
+                    nullable: false
+                    primaryKey: true
+                    primaryKeyName: pk_device
                   name: id
-                  type: bigint
+                  type: BIGINT
+              - column:
                   constraints:
                     nullable: false
+                  name: user_id
+                  type: BIGINT
               - column:
-                  name: column_1
-                  type: varchar(100)
-              - column:
-                  name: column_2
-                  type: int
-              - column:
-                  name: created_date
-                  type: timestamp
                   constraints:
                     nullable: false
-                  defaultValueDate: current_timestamp
+                  name: username
+                  type: TEXT
               - column:
-                  name: created_by
-                  type: varchar(255)
                   constraints:
                     nullable: false
+                  name: audience
+                  type: TEXT
               - column:
-                  name: last_modified_date
-                  type: timestamp
                   constraints:
                     nullable: false
-                  defaultValueDate: current_timestamp
+                  name: type
+                  type: VARCHAR(12)
               - column:
-                  name: last_modified_by
-                  type: varchar(255)
                   constraints:
                     nullable: false
-            tableName: sample_table
+                  name: device_id
+                  type: TEXT
+              - column:
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: now()
+                  name: crated_date
+                  type: TIMESTAMP WITH TIME ZONE
+            tableName: device
   - changeSet:
-      id: sample-table-primary-key
-      author: Leijendekker
+      id: 1628230435480-2
+      author: Leijendary (generated)
       changes:
-        - addPrimaryKey:
-            columnNames: id
-            constraintName: pk_sample_table
-            tableName: sample_table
-            validate: true
+        - createIndex:
+            columns:
+              - column:
+                  name: user_id
+            indexName: idx_device_user_id
+            tableName: device
   - changeSet:
-      id: sample-table-id-unique-constraint
-      author: Leijendekker
+      id: 1628230435480-3
+      author: Leijendary (generated)
       changes:
-        - addUniqueConstraint:
-            columnNames: id
-            constraintName: uidx_sample_table_id
-            tableName: sample_table
-            validate: true
+        - createIndex:
+            columns:
+              - column:
+                  name: username
+            indexName: idx_device_username
+            tableName: device
+  - changeSet:
+      id: 1628230435480-4
+      author: Leijendary (generated)
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: device_id
+            indexName: uidx_device_device_id
+            tableName: device
+            unique: true
+

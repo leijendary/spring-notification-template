@@ -1,9 +1,6 @@
 package com.leijendary.spring.notificationtemplate.config;
 
-import com.leijendary.spring.notificationtemplate.config.properties.AspectProperties;
-import com.leijendary.spring.notificationtemplate.config.properties.AuthProperties;
-import com.leijendary.spring.notificationtemplate.config.properties.CorsProperties;
-import com.leijendary.spring.notificationtemplate.config.properties.InfoProperties;
+import com.leijendary.spring.notificationtemplate.config.properties.*;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +9,7 @@ import org.springframework.context.annotation.Configuration;
         AspectProperties.class,
         AuthProperties.class,
         CorsProperties.class,
-        InfoProperties.class })
+        InfoProperties.class,
+        SmsProperties.class })
 public class PropertiesConfiguration {
 }
