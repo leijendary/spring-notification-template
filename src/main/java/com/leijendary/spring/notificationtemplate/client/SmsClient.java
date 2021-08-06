@@ -11,6 +11,6 @@ import static org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED_VAL
 @FeignClient(name = "sms", configuration = FormUrlEncodedFeignConfiguration.class)
 public interface SmsClient {
 
-    @PostMapping(value = "api.php/sendsms", consumes = APPLICATION_FORM_URLENCODED_VALUE)
+    @PostMapping(value = "send", consumes = APPLICATION_FORM_URLENCODED_VALUE)
     String send(@RequestBody final SmsSendData data);
 }
