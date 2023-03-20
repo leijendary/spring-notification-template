@@ -1,78 +1,145 @@
 databaseChangeLog:
   - changeSet:
-      id: 1628230435480-1
-      author: Leijendary (generated)
+      id: create-device-table
+      author: Leijendekker
       changes:
         - createTable:
             columns:
               - column:
-                  constraints:
-                    nullable: false
-                    primaryKey: true
-                    primaryKeyName: pk_device
                   name: id
-                  type: BIGINT
-              - column:
+                  type: bigserial
+                  autoIncrement: true
                   constraints:
                     nullable: false
-                  name: user_id
-                  type: BIGINT
-              - column:
-                  constraints:
-                    nullable: false
-                  name: username
-                  type: TEXT
-              - column:
-                  constraints:
-                    nullable: false
-                  name: audience
-                  type: TEXT
-              - column:
-                  constraints:
-                    nullable: false
-                  name: type
-                  type: VARCHAR(12)
-              - column:
-                  constraints:
-                    nullable: false
-                  name: device_id
-                  type: TEXT
-              - column:
-                  constraints:
-                    nullable: false
-                  defaultValueComputed: now()
-                  name: crated_date
-                  type: TIMESTAMP WITH TIME ZONE
-            tableName: device
-  - changeSet:
-      id: 1628230435480-2
-      author: Leijendary (generated)
-      changes:
-        - createIndex:
-            columns:
+                    unique: true
               - column:
                   name: user_id
-            indexName: idx_device_user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: token
+                  type: text
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: platform
+                  type: varchar(8)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: endpoint
+                  type: varchar(250)
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+                  defaultValueDate: current_timestamp
             tableName: device
   - changeSet:
-      id: 1628230435480-3
-      author: Leijendary (generated)
+      id: create-notification-table
+      author: Leijendekker
+      changes:
+        - createTable:
+            columns:
+              - column:
+                  name: id
+                  type: uuid
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    unique: true
+              - column:
+                  name: row_id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    nullable: false
+                    unique: true
+              - column:
+                  name: user_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+              - column:
+                  name: title
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: body
+                  type: text
+                  constraints:
+                    nullable: false
+              - column:
+                  name: image_url
+                  type: text
+              - column:
+                  name: is_read
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: false
+              - column:
+                  name: created_at
+                  type: timestamp with time zone
+                  constraints:
+                    nullable: false
+                  defaultValueDate: current_timestamp
+            tableName: notification
+  - changeSet:
+      id: add-device-user-id-index
+      author: Leijendekker
       changes:
         - createIndex:
             columns:
               - column:
-                  name: username
-            indexName: idx_device_username
+                  name: user_id
+            indexName: device_user_id_idx
             tableName: device
   - changeSet:
-      id: 1628230435480-4
-      author: Leijendary (generated)
+      id: add-device-token-index
+      author: Leijendekker
       changes:
         - createIndex:
             columns:
               - column:
-                  name: device_id
-            indexName: uidx_device_device_id
+                  name: token
+            indexName: device_token_idx
             tableName: device
-            unique: true
-
+  - changeSet:
+      id: add-device-user-id-token-index
+      author: Leijendekker
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: user_id
+              - column:
+                  name: token
+            indexName: device_user_id_token_idx
+            tableName: device
+  - changeSet:
+      id: add-notification-id-user-id-index
+      author: Leijendekker
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: id
+              - column:
+                  name: user_id
+            indexName: notification_id_user_id_idx
+            tableName: notification
+  - changeSet:
+      id: add-notification-user-id-index
+      author: Leijendekker
+      changes:
+        - createIndex:
+            columns:
+              - column:
+                  name: user_id
+            indexName: notification_user_id_idx
+            tableName: notification

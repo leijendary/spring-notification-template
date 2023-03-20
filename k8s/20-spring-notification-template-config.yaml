@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: spring-notification-template-config
+  namespace: template
+data:
+  SPRING_PROFILES_ACTIVE: dev
+  SPRING_DATASOURCE_PRIMARY_JDBC_URL: "jdbc:postgresql://postgres-service.database.svc.cluster.local:5432/spring_notification_template"
+  SPRING_DATASOURCE_PRIMARY_USERNAME: postgres
+  SPRING_DATASOURCE_READONLY_JDBC_URL: "jdbc:postgresql://postgres-service.database.svc.cluster.local:5432/spring_notification_template"
+  SPRING_DATASOURCE_READONLY_USERNAME: postgres
+  SPRING_CLOUD_AWS_CREDENTIALS_INSTANCE_PROFILE: "false"
+  SPRING_CLOUD_AWS_REGION_INSTANCE_PROFILE: "false"
+  SPRING_CLOUD_AWS_REGION_STATIC: eu-central-1
+  SPRING_CLOUD_AWS_SNS_PLATFORM_APPLE_ARN:
+  SPRING_CLOUD_AWS_SNS_PLATFORM_FIREBASE_ARN:
+  SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka-service.kafka.svc.cluster.local:9092
+  AWS_EC2_METADATA_DISABLED: "true"
+  MANAGEMENT_ZIPKIN_TRACING_ENDPOINT: http://jaeger-service.monitoring.svc.cluster.local:9411/api/v2/spans

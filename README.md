@@ -1,6 +1,6 @@
-# Spring Boot Notification Template for Microservices
+# Spring Boot Template for Notification
 
-- This template is intended for the microservice architecture
+- This template is intended for the notification functionalities only
 - Kafka is included in this template
 - Sample classes are included
 - **This template uses annotation based routing**
@@ -8,32 +8,41 @@
 
 # Technologies Used:
 
+- Kotlin
+- Spring Boot 3
 - Spring Actuator
-- Spring Data JPA
-- Spring Web
-- Spring Security
-- Spring OAuth2 Resource Server
-- Spring Security OAuth2 JOSE
-- Spring Cloud Bootstrap
-- Spring Cloud Openfeign
-- Spring Cloud Loadbalancer
-- Spring Cloud Netflix Ribbon
-- Spring Cache
-- Spring Data Redis
-- Spring Retry
-- Spring Kafka
-- Spring Cloud Stream
-- Spring Cloud Stream Binder Kafka Streams
+- Spring Cloud AWS SES
+- Spring Cloud AWS SNS
 - Spring Configuration Processor
+- Spring Data JPA
 - Spring Devtools
-- Kafka Streams
-- PostgreSQL
-- Liquibase
-- Lombok
-- Swagger
-- ModelMapper
-- Caffeine
+- Spring Kafka
+- Spring Retry
+- Spring Validation
+- Spring Web
+- SpringDoc OpenAPI
+- AWS CDK
 - Docker
-- AOP
-- Avro
 - JUnit
+- Kubernetes
+- Liquibase
+- MapStruct
+- Micrometer Tracing
+- OpenAPI
+- PostgreSQL
+- Prometheus
+- Zipkin
+
+# Spring Notification Template
+
+### To run the code:
+
+`./gradlew bootRun`
+
+### To run tests:
+
+`./gradlew test`
+
+### To build a JAR file:
+
+`./gradlew build -x test`

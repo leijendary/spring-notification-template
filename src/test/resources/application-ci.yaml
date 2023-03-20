@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    primary:
+      maximumPoolSize: 5
+    readonly:
+      maximumPoolSize: 1
