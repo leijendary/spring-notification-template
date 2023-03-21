@@ -3,9 +3,9 @@ package com.leijendary.spring.template.notification.client
 import com.leijendary.spring.template.notification.core.config.properties.AwsSnsProperties
 import com.leijendary.spring.template.notification.core.extension.AnyUtil.toJson
 import com.leijendary.spring.template.notification.core.util.SpringContext.Companion.isProd
-import com.leijendary.spring.template.notification.model.Platform
-import com.leijendary.spring.template.notification.model.Platform.ANDROID
-import com.leijendary.spring.template.notification.model.Platform.IOS
+import com.leijendary.spring.template.notification.entity.Device.Platform
+import com.leijendary.spring.template.notification.entity.Device.Platform.ANDROID
+import com.leijendary.spring.template.notification.entity.Device.Platform.IOS
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.services.sns.SnsClient
 import software.amazon.awssdk.services.sns.model.PublishRequest

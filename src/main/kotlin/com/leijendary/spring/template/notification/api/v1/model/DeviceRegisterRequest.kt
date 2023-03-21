@@ -1,6 +1,6 @@
 package com.leijendary.spring.template.notification.api.v1.model
 
-import com.leijendary.spring.template.notification.model.Platform
+import com.leijendary.spring.template.notification.entity.Device.Platform
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 
