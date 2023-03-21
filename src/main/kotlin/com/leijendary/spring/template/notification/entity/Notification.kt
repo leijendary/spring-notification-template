@@ -9,9 +9,9 @@ import java.util.*
 
 @Entity
 class Notification : UUIDEntity() {
-    var userId: UUID? = null
-    var title: String = ""
-    var body: String = ""
+    lateinit var userId: UUID
+    lateinit var title: String
+    lateinit var body: String
     var imageUrl: String? = null
     var isRead: Boolean = false
 
