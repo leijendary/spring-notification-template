@@ -1,6 +1,7 @@
 package com.leijendary.spring.template.notification.entity
 
 import com.leijendary.spring.template.notification.core.entity.IdentityEntity
+import com.leijendary.spring.template.notification.core.util.RequestContext.now
 import com.leijendary.spring.template.notification.model.Platform
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType.STRING
@@ -17,8 +18,8 @@ class Device : IdentityEntity() {
     @Enumerated(STRING)
     lateinit var platform: Platform
 
-    lateinit var endpoint: String
+    var endpoint: String = ""
 
     @CreatedDate
-    lateinit var createdAt: OffsetDateTime
+    var createdAt: OffsetDateTime = now
 }
