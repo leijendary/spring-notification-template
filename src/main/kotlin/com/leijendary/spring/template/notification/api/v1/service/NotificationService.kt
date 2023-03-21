@@ -33,7 +33,7 @@ class NotificationService(
     fun create(notification: Notification) {
         notificationRepository.save(notification)
 
-        val userId = notification.userId!!
+        val userId = notification.userId
         val title = notification.title
         val body = notification.body
         val imageUrl = notification.imageUrl
