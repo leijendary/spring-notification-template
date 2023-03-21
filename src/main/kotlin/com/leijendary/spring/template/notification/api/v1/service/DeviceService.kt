@@ -5,7 +5,6 @@ import com.leijendary.spring.template.notification.api.v1.model.DeviceDeregister
 import com.leijendary.spring.template.notification.api.v1.model.DeviceRegisterRequest
 import com.leijendary.spring.template.notification.client.NotificationClient
 import com.leijendary.spring.template.notification.core.extension.transactional
-import com.leijendary.spring.template.notification.model.Platform
 import com.leijendary.spring.template.notification.repository.DeviceRepository
 import org.springframework.stereotype.Service
 import java.util.*
@@ -20,7 +19,7 @@ class DeviceService(
     }
 
     fun register(userId: UUID, request: DeviceRegisterRequest) {
-        val platform = request.platform!!.let { Platform.from(it) }
+        val platform = request.platform!!
         val token = request.token!!
         val device = transactional(readOnly = true) {
             deviceRepository

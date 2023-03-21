@@ -5,7 +5,6 @@ import com.leijendary.spring.template.notification.api.v1.model.NotificationResp
 import com.leijendary.spring.template.notification.client.NotificationClient
 import com.leijendary.spring.template.notification.core.extension.transactional
 import com.leijendary.spring.template.notification.entity.Notification
-import com.leijendary.spring.template.notification.model.Platform
 import com.leijendary.spring.template.notification.repository.DeviceRepository
 import com.leijendary.spring.template.notification.repository.NotificationRepository
 import org.springframework.data.domain.Page
@@ -44,10 +43,7 @@ class NotificationService(
                 .streamByUserId(userId)
                 .parallel()
                 .forEach {
-                    val platform = it.platform.let { platform -> Platform.from(platform) }
-                    val token = it.token
-
-                    notificationClient.send(platform, token, title, body, imageUrl)
+                    notificationClient.send(it.platform, it.token, title, body, imageUrl)
                 }
         }
     }
