@@ -8,6 +8,6 @@ class AuthProperties {
     var system = System()
 
     inner class System {
-        var principal: String = ""
+        lateinit var principal: String
     }
 }

@@ -12,6 +12,6 @@ class AwsSnsProperties {
     }
 
     inner class Config {
-        var arn: String = ""
+        lateinit var arn: String
     }
 }
