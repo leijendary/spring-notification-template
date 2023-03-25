@@ -5,6 +5,7 @@ import com.leijendary.spring.template.notification.api.v1.model.NotificationResp
 import com.leijendary.spring.template.notification.client.NotificationClient
 import com.leijendary.spring.template.notification.core.extension.transactional
 import com.leijendary.spring.template.notification.entity.Notification
+import com.leijendary.spring.template.notification.model.Status.READ
 import com.leijendary.spring.template.notification.repository.DeviceRepository
 import com.leijendary.spring.template.notification.repository.NotificationRepository
 import org.springframework.data.domain.Page
@@ -53,7 +54,7 @@ class NotificationService(
             notificationRepository.findFirstByIdAndUserIdOrThrow(id, userId)
         }!!
 
-        notification.isRead = true
+        notification.status = READ
 
         notificationRepository.save(notification)
 

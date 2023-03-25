@@ -4,7 +4,6 @@ import com.leijendary.spring.template.notification.api.v1.model.NotificationResp
 import com.leijendary.spring.template.notification.entity.Notification
 import com.leijendary.spring.template.notification.model.PushMessage
 import org.mapstruct.Mapper
-import org.mapstruct.Mapping
 import org.mapstruct.factory.Mappers.getMapper
 
 @Mapper
@@ -13,7 +12,6 @@ interface NotificationMapper {
         val INSTANCE: NotificationMapper = getMapper(NotificationMapper::class.java)
     }
 
-    @Mapping(target = "isRead", source = "read")
     fun toResponse(notification: Notification): NotificationResponse
 
     fun toEntity(pushMessage: PushMessage): Notification
