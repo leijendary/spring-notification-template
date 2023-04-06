@@ -28,11 +28,10 @@ class NotificationConsumer(
     fun email(json: String) {
         val emailMessage = json.toClass(EmailMessage::class)
         val to = emailMessage.to
-        val subject = emailMessage.subject
-        val htmlText = emailMessage.htmlText
-        val plainText = emailMessage.plainText
+        val template = emailMessage.template
+        val params = emailMessage.params
 
-        emailClient.send(to, subject, htmlText, plainText)
+        emailClient.send(to, template, params)
     }
 
     @KafkaListener(topics = ["\${spring.kafka.topic.$NOTIFICATION_PUSH.name}"])

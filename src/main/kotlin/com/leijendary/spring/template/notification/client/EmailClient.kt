@@ -1,24 +1,25 @@
 package com.leijendary.spring.template.notification.client
 
 import com.leijendary.spring.template.notification.core.config.properties.InfoProperties
-import org.springframework.mail.javamail.JavaMailSender
-import org.springframework.mail.javamail.MimeMessageHelper
+import com.leijendary.spring.template.notification.core.extension.AnyUtil.toJson
 import org.springframework.stereotype.Component
+import software.amazon.awssdk.services.ses.SesClient
+import software.amazon.awssdk.services.ses.model.SendTemplatedEmailRequest
 
 @Component
-class EmailClient(private val infoProperties: InfoProperties, private val javaMailSender: JavaMailSender) {
-    fun send(to: String, subject: String, htmlText: String, plainText: String?) {
-        val message = javaMailSender.createMimeMessage()
+class EmailClient(infoProperties: InfoProperties, private val sesClient: SesClient) {
+    private val from = infoProperties.api.contact!!.email
 
-        MimeMessageHelper(message, true).apply {
-            setTo(to)
-            setFrom(infoProperties.api.contact!!.email)
-            setSubject(subject)
-            setText(htmlText, true)
+    fun send(to: String, template: String, params: Map<String, String>) {
+        val templatedEmail = SendTemplatedEmailRequest.builder()
+            .source(from)
+            .destination {
+                it.toAddresses(to)
+            }
+            .template(template)
+            .templateData(params.toJson())
+            .build()
 
-            plainText?.let { setText(it) }
-        }
-
-        javaMailSender.send(message)
+        sesClient.sendTemplatedEmail(templatedEmail)
     }
 }
