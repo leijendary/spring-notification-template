@@ -4,7 +4,7 @@ import com.leijendary.spring.template.notification.api.v1.mapper.DeviceMapper
 import com.leijendary.spring.template.notification.api.v1.model.DeviceDeregisterRequest
 import com.leijendary.spring.template.notification.api.v1.model.DeviceRegisterRequest
 import com.leijendary.spring.template.notification.client.NotificationClient
-import com.leijendary.spring.template.notification.core.extension.transactional
+import com.leijendary.spring.template.notification.core.datasource.transactional
 import com.leijendary.spring.template.notification.repository.DeviceRepository
 import org.springframework.stereotype.Service
 import java.util.*

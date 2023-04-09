@@ -1,4 +1,4 @@
-package com.leijendary.spring.template.notification.core.extension
+package com.leijendary.spring.template.notification.core.datasource
 
 import com.leijendary.spring.template.notification.core.util.SpringContext.Companion.getBean
 import org.springframework.transaction.PlatformTransactionManager

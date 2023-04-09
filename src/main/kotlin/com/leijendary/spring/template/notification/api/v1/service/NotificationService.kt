@@ -3,7 +3,7 @@ package com.leijendary.spring.template.notification.api.v1.service
 import com.leijendary.spring.template.notification.api.v1.mapper.NotificationMapper
 import com.leijendary.spring.template.notification.api.v1.model.NotificationResponse
 import com.leijendary.spring.template.notification.client.NotificationClient
-import com.leijendary.spring.template.notification.core.extension.transactional
+import com.leijendary.spring.template.notification.core.datasource.transactional
 import com.leijendary.spring.template.notification.entity.Notification
 import com.leijendary.spring.template.notification.model.Status.READ
 import com.leijendary.spring.template.notification.repository.DeviceRepository
