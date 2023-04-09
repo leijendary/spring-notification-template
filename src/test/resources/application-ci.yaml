@@ -4,3 +4,11 @@ spring:
       maximumPoolSize: 5
     readonly:
       maximumPoolSize: 1
+  kafka:
+    jaas:
+      enabled: false
+    properties:
+      sasl:
+        mechanism: PLAIN
+    security:
+      protocol: PLAINTEXT
