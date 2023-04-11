@@ -1,7 +1,7 @@
 package com.leijendary.spring.template.notification.client
 
 import com.leijendary.spring.template.notification.core.config.properties.InfoProperties
-import com.leijendary.spring.template.notification.core.extension.AnyUtil.toJson
+import com.leijendary.spring.template.notification.core.extension.toJson
 import org.springframework.stereotype.Component
 import software.amazon.awssdk.services.ses.SesClient
 import software.amazon.awssdk.services.ses.model.SendTemplatedEmailRequest

@@ -1,7 +1,7 @@
 package com.leijendary.spring.template.notification.client
 
 import com.leijendary.spring.template.notification.core.config.properties.AwsSnsProperties
-import com.leijendary.spring.template.notification.core.extension.AnyUtil.toJson
+import com.leijendary.spring.template.notification.core.extension.toJson
 import com.leijendary.spring.template.notification.core.util.SpringContext.Companion.isProd
 import com.leijendary.spring.template.notification.entity.Device.Platform
 import com.leijendary.spring.template.notification.entity.Device.Platform.ANDROID
@@ -35,7 +35,7 @@ class NotificationClient(private val awsSnsProperties: AwsSnsProperties, private
             IOS -> ios(title, body, imageUrl)
             else -> return
         }
-        val json = message.toJson()!!
+        val json = message.toJson()
         val request = PublishRequest.builder()
             .targetArn(arn)
             .message(json)
@@ -59,7 +59,7 @@ class NotificationClient(private val awsSnsProperties: AwsSnsProperties, private
         imageUrl?.let { notification.put("image", it) }
 
         val gcm = mapOf("notification" to notification)
-        val json = gcm.toJson()!!
+        val json = gcm.toJson()
         val key = "GCM"
 
         return mapOf(key to json)
@@ -75,7 +75,7 @@ class NotificationClient(private val awsSnsProperties: AwsSnsProperties, private
 
         val aps = mapOf("alert" to alert)
         val apns = mapOf("aps" to aps)
-        val json = apns.toJson()!!
+        val json = apns.toJson()
         val key = if (isProd()) "APNS" else "APNS_SANDBOX"
 
         return mapOf(key to json)

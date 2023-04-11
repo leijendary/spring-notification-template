@@ -1,6 +1,5 @@
 package com.leijendary.spring.template.notification.core.extension
 
-import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.leijendary.spring.template.notification.core.util.SpringContext.Companion.getBean
 import java.lang.reflect.Field
@@ -30,16 +29,6 @@ fun Any.reflectSet(property: String, value: Any?): Any? {
     return field.get(this)
 }
 
-object AnyUtil {
-    private val log = logger()
-
-    fun Any.toJson(): String? {
-        try {
-            return mapper.writeValueAsString(this)
-        } catch (e: JsonProcessingException) {
-            log.warn("Failed to parse object to json", e)
-        }
-
-        return null
-    }
+fun Any.toJson(): String {
+    return mapper.writeValueAsString(this)
 }
