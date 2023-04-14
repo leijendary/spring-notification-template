@@ -1,13 +1,10 @@
 package com.leijendary.spring.template.notification.core.extension
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import com.leijendary.spring.template.notification.core.util.SpringContext.Companion.getBean
+import com.leijendary.spring.template.notification.core.util.BeanContainer.OBJECT_MAPPER
 import java.lang.reflect.Field
 
-val mapper = getBean(ObjectMapper::class)
-
 fun Any.toJson(): String {
-    return mapper.writeValueAsString(this)
+    return OBJECT_MAPPER.writeValueAsString(this)
 }
 
 fun Any.reflectField(property: String): Field {
