@@ -1,1 +1,1 @@
-rootProject.name = "spring-notification-template"
+rootProject.name = "notification-template"
