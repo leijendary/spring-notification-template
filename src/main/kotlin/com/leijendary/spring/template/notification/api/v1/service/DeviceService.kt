@@ -21,11 +21,10 @@ class DeviceService(
     fun register(userId: UUID, request: DeviceRegisterRequest) {
         val platform = request.platform!!
         val token = request.token!!
-        val device = transactional(readOnly = true) {
-            deviceRepository
-                .findFirstByToken(token)
-                ?.apply { this.userId = userId }
-        } ?: MAPPER.toEntity(userId, request)
+        val device = deviceRepository
+            .findFirstByToken(token)
+            ?.apply { this.userId = userId }
+            ?: MAPPER.toEntity(userId, request)
 
         if (device.endpoint.isBlank()) {
             val endpoint = notificationClient.createEndpoint(platform, token) ?: return
@@ -38,9 +37,7 @@ class DeviceService(
 
     fun deregister(userId: UUID, request: DeviceDeregisterRequest) {
         val token = request.token!!
-        val device = transactional(readOnly = true) {
-            deviceRepository.findFirstByUserIdAndTokenOrThrow(userId, token)
-        }!!
+        val device = deviceRepository.findFirstByUserIdAndTokenOrThrow(userId, token)
 
         transactional {
             deviceRepository.delete(device)
