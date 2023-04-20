@@ -37,10 +37,9 @@ class NotificationService(
         val body = notification.body
         val imageUrl = notification.imageUrl
 
-        deviceRepository
-            .streamByUserId(userId)
-            .parallel()
-            .forEach { notificationClient.send(it.platform, it.token, title, body, imageUrl) }
+        deviceRepository.streamByUserId(userId).use { stream ->
+            stream.parallel().forEach { notificationClient.send(it.platform, it.token, title, body, imageUrl) }
+        }
     }
 
     fun get(userId: UUID, id: UUID): NotificationResponse {
