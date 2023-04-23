@@ -50,13 +50,11 @@ spring:
         cachePrepStmts: true
         rewriteBatchedStatements: true
         useServerPrepStmts: true
-      maximumPoolSize: 20
     readonly:
       poolName: Read-only
       jdbcUrl:
       username:
       password:
-      maximumPoolSize: 10
   jpa:
     openInView: false
     properties:
