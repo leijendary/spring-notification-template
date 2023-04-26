@@ -19,14 +19,10 @@ class NotificationService(
     private val notificationClient: NotificationClient,
     private val notificationRepository: NotificationRepository
 ) {
-    companion object {
-        private val MAPPER = NotificationMapper.INSTANCE
-    }
-
     fun list(userId: UUID, pageable: Pageable): Page<NotificationResponse> {
         return notificationRepository
             .findByUserId(userId, pageable)
-            .map { MAPPER.toResponse(it) }
+            .map { NotificationMapper.INSTANCE.toResponse(it) }
     }
 
     fun create(notification: Notification) {
@@ -51,7 +47,7 @@ class NotificationService(
 
         notificationRepository.save(notification)
 
-        return MAPPER.toResponse(notification)
+        return NotificationMapper.INSTANCE.toResponse(notification)
     }
 
     fun delete(userId: UUID, id: UUID) {

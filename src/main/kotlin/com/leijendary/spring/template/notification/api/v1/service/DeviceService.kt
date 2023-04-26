@@ -14,17 +14,13 @@ class DeviceService(
     private val deviceRepository: DeviceRepository,
     private val notificationClient: NotificationClient
 ) {
-    companion object {
-        private val MAPPER = DeviceMapper.INSTANCE
-    }
-
     fun register(userId: UUID, request: DeviceRegisterRequest) {
         val platform = request.platform!!
         val token = request.token!!
         val device = deviceRepository
             .findFirstByToken(token)
             ?.apply { this.userId = userId }
-            ?: MAPPER.toEntity(userId, request)
+            ?: DeviceMapper.INSTANCE.toEntity(userId, request)
 
         if (device.endpoint.isBlank()) {
             val endpoint = notificationClient.createEndpoint(platform, token) ?: return
