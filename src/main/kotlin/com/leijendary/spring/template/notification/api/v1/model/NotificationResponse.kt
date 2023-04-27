@@ -9,7 +9,7 @@ data class NotificationResponse(
     val userId: UUID,
     val title: String,
     val body: String,
-    val imageUrl: String?,
+    val image: String?,
     val status: Status,
     val createdAt: OffsetDateTime
 )

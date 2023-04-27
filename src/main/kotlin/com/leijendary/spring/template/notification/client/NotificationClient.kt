@@ -28,11 +28,11 @@ class NotificationClient(private val awsSnsProperties: AwsSnsProperties, private
         }
     }
 
-    fun send(platform: Platform, token: String, title: String, body: String, imageUrl: String?) {
+    fun send(platform: Platform, token: String, title: String, body: String, image: String?) {
         val arn = getArn(platform) ?: return
         val message = when (platform) {
-            ANDROID -> android(title, body, imageUrl)
-            IOS -> ios(title, body, imageUrl)
+            ANDROID -> android(title, body, image)
+            IOS -> ios(title, body, image)
             else -> return
         }
         val json = message.toJson()
@@ -50,13 +50,13 @@ class NotificationClient(private val awsSnsProperties: AwsSnsProperties, private
         else -> null
     }
 
-    private fun android(title: String, body: String, imageUrl: String?): Map<String, String> {
+    private fun android(title: String, body: String, image: String?): Map<String, String> {
         val notification = mutableMapOf(
             "title" to title,
             "body" to body
         )
 
-        imageUrl?.let { notification.put("image", it) }
+        image?.let { notification.put("image", it) }
 
         val gcm = mapOf("notification" to notification)
         val json = gcm.toJson()
@@ -65,13 +65,13 @@ class NotificationClient(private val awsSnsProperties: AwsSnsProperties, private
         return mapOf(key to json)
     }
 
-    private fun ios(title: String, body: String, imageUrl: String?): Map<String, String> {
+    private fun ios(title: String, body: String, image: String?): Map<String, String> {
         val alert = mutableMapOf(
             "title" to title,
             "body" to body
         )
 
-        imageUrl?.let { alert.put("url", it) }
+        image?.let { alert.put("url", it) }
 
         val aps = mapOf("alert" to alert)
         val apns = mapOf("aps" to aps)

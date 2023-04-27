@@ -15,7 +15,7 @@ class Notification : UUIDEntity() {
     lateinit var userId: UUID
     lateinit var title: String
     lateinit var body: String
-    var imageUrl: String? = null
+    var image: String? = null
 
     @Enumerated(STRING)
     var status: Status = Status.NEW
