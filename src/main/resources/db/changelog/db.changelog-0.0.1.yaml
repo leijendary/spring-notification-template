@@ -74,7 +74,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: image_url
+                  name: image
                   type: text
               - column:
                   name: status
