@@ -34,9 +34,6 @@ spring:
     jdbc:
       repositories:
         enabled: false
-    ldap:
-      repositories:
-        enabled: false
     web:
       pageable:
         maxPageSize: 100
