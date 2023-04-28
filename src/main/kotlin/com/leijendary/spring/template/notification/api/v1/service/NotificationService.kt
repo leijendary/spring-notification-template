@@ -33,7 +33,7 @@ class NotificationService(
         val body = notification.body
         val image = notification.image
 
-        deviceRepository.streamByUserId(userId).parallel().use { stream ->
+        deviceRepository.streamByUserId(userId).use { stream ->
             stream.forEach {
                 notificationClient
                     .send(it.platform, it.endpoint, title, body, image)
