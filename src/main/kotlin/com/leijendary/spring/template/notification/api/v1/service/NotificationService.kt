@@ -5,7 +5,7 @@ import com.leijendary.spring.template.notification.api.v1.model.NotificationResp
 import com.leijendary.spring.template.notification.client.NotificationClient
 import com.leijendary.spring.template.notification.core.datasource.transactional
 import com.leijendary.spring.template.notification.entity.Notification
-import com.leijendary.spring.template.notification.model.Status.READ
+import com.leijendary.spring.template.notification.entity.Notification.Status.READ
 import com.leijendary.spring.template.notification.repository.DeviceRepository
 import com.leijendary.spring.template.notification.repository.NotificationRepository
 import org.springframework.data.domain.Page
@@ -42,7 +42,6 @@ class NotificationService(
 
     fun get(userId: UUID, id: UUID): NotificationResponse {
         val notification = notificationRepository.findFirstByIdAndUserIdOrThrow(id, userId)
-
         notification.status = READ
 
         notificationRepository.save(notification)

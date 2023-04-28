@@ -1,6 +1,6 @@
 package com.leijendary.spring.template.notification.api.v1.model
 
-import com.leijendary.spring.template.notification.model.Status
+import com.leijendary.spring.template.notification.entity.Notification.Status
 import java.time.OffsetDateTime
 import java.util.*
 
