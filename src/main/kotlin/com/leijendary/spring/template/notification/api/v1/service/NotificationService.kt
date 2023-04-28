@@ -41,8 +41,7 @@ class NotificationService(
     }
 
     fun get(userId: UUID, id: UUID): NotificationResponse {
-        val notification = notificationRepository.findFirstByIdAndUserIdOrThrow(id, userId)
-        notification.status = READ
+        val notification = notificationRepository.findFirstByIdAndUserIdOrThrow(id, userId).apply { status = READ }
 
         notificationRepository.save(notification)
 
