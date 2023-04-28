@@ -3,7 +3,6 @@ package com.leijendary.spring.template.notification.api.v1.service
 import com.leijendary.spring.template.notification.api.v1.mapper.NotificationMapper
 import com.leijendary.spring.template.notification.api.v1.model.NotificationResponse
 import com.leijendary.spring.template.notification.client.NotificationClient
-import com.leijendary.spring.template.notification.core.datasource.transactional
 import com.leijendary.spring.template.notification.entity.Notification
 import com.leijendary.spring.template.notification.entity.Notification.Status.READ
 import com.leijendary.spring.template.notification.repository.DeviceRepository
@@ -11,6 +10,7 @@ import com.leijendary.spring.template.notification.repository.NotificationReposi
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import java.util.*
 
 @Service
@@ -35,7 +35,13 @@ class NotificationService(
 
         deviceRepository.streamByUserId(userId).parallel().use { stream ->
             stream.forEach {
-                notificationClient.send(it.platform, it.token, title, body, image)
+                notificationClient
+                    .send(it.platform, it.endpoint, title, body, image)
+                    .exceptionally { _ ->
+                        deviceRepository.delete(it)
+
+                        null
+                    }
             }
         }
     }
@@ -48,13 +54,12 @@ class NotificationService(
         return NotificationMapper.INSTANCE.toResponse(notification)
     }
 
+    @Transactional
     fun delete(userId: UUID, id: UUID) {
-        transactional {
-            notificationRepository
-                .findFirstByIdAndUserIdOrThrow(id, userId)
-                .let {
-                    notificationRepository.delete(it)
-                }
-        }
+        notificationRepository
+            .findFirstByIdAndUserIdOrThrow(id, userId)
+            .let {
+                notificationRepository.delete(it)
+            }
     }
 }

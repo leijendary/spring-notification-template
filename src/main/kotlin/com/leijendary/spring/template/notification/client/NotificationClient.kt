@@ -1,19 +1,28 @@
 package com.leijendary.spring.template.notification.client
 
 import com.leijendary.spring.template.notification.core.config.properties.AwsSnsProperties
+import com.leijendary.spring.template.notification.core.extension.logger
 import com.leijendary.spring.template.notification.core.extension.toJson
 import com.leijendary.spring.template.notification.core.util.SpringContext.Companion.isProd
 import com.leijendary.spring.template.notification.entity.Device.Platform
 import com.leijendary.spring.template.notification.entity.Device.Platform.ANDROID
 import com.leijendary.spring.template.notification.entity.Device.Platform.IOS
+import org.springframework.scheduling.annotation.Async
 import org.springframework.stereotype.Component
+import software.amazon.awssdk.core.exception.SdkException
 import software.amazon.awssdk.services.sns.SnsClient
+import software.amazon.awssdk.services.sns.model.NotFoundException
 import software.amazon.awssdk.services.sns.model.PublishRequest
+import java.util.concurrent.CompletableFuture
+import java.util.concurrent.CompletableFuture.completedFuture
+import java.util.concurrent.CompletableFuture.failedFuture
 
 @Component
 class NotificationClient(private val awsSnsProperties: AwsSnsProperties, private val snsClient: SnsClient) {
+    private val log = logger()
+
     fun createEndpoint(platform: Platform, token: String): String? {
-        val arn = getArn(platform) ?: return null
+        val arn = getTopicArn(platform) ?: return null
         val response = snsClient.createPlatformEndpoint {
             it.platformApplicationArn(arn)
             it.token(token)
@@ -23,28 +32,44 @@ class NotificationClient(private val awsSnsProperties: AwsSnsProperties, private
     }
 
     fun deleteEndpoint(endpoint: String) {
-        snsClient.deleteEndpoint {
-            it.endpointArn(endpoint)
-        }
+        snsClient.deleteEndpoint { it.endpointArn(endpoint) }
     }
 
-    fun send(platform: Platform, token: String, title: String, body: String, image: String?) {
-        val arn = getArn(platform) ?: return
+    @Async
+    fun send(
+        platform: Platform,
+        endpoint: String,
+        title: String,
+        body: String,
+        image: String?
+    ): CompletableFuture<Void> {
+        val topicArn = getTopicArn(platform) ?: return completedFuture(null)
         val message = when (platform) {
             ANDROID -> android(title, body, image)
             IOS -> ios(title, body, image)
-            else -> return
+            else -> return completedFuture(null)
         }
         val json = message.toJson()
         val request = PublishRequest.builder()
-            .targetArn(arn)
+            .topicArn(topicArn)
+            .targetArn(endpoint)
             .message(json)
             .build()
 
-        snsClient.publish(request)
+        try {
+            snsClient.publish(request)
+        } catch (exception: SdkException) {
+            when (exception) {
+                is NotFoundException -> return failedFuture(exception)
+
+                else -> log.error("Error when sending to endpoint $endpoint", exception)
+            }
+        }
+
+        return completedFuture(null)
     }
 
-    private fun getArn(platform: Platform) = when (platform) {
+    private fun getTopicArn(platform: Platform) = when (platform) {
         ANDROID -> awsSnsProperties.platform.firebase.arn
         IOS -> awsSnsProperties.platform.apple.arn
         else -> null
