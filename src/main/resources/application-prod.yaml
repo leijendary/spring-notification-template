@@ -1,3 +1,15 @@
+spring:
+  kafka:
+    listener:
+      concurrency: 40
+    topic:
+      notificationEmail:
+        partitions: 20
+      notificationPush:
+        partitions: 10
+      notificationSms:
+        partitions: 10
+
 springdoc:
   apiDocs:
     enabled: false
