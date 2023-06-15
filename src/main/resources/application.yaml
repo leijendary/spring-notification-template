@@ -52,6 +52,8 @@ spring:
       jdbcUrl:
       username:
       password:
+  jackson:
+    defaultPropertyInclusion: NON_ABSENT
   jpa:
     openInView: false
     properties:
@@ -97,7 +99,7 @@ spring:
       notificationSms:
         name: \${info.app.organization}.notification.sms
   main:
-    bannerMode: log
+    bannerMode: LOG
   messages:
     basename: messages.access, messages.error, messages.validation
   mvc:
