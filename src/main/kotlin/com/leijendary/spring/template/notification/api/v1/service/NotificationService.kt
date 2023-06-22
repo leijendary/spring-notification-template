@@ -37,11 +37,7 @@ class NotificationService(
             stream.forEach {
                 notificationClient
                     .send(it.platform, it.endpoint, title, body, image)
-                    .exceptionally { _ ->
-                        deviceRepository.delete(it)
-
-                        null
-                    }
+                    .exceptionally { _ -> deviceRepository.delete(it); null }
             }
         }
     }
