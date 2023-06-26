@@ -33,21 +33,3 @@ fun String.lowerCaseFirst(): String {
 
     return String(chars)
 }
-
-fun String.isInt(): Boolean {
-    return try {
-        this.toInt()
-        true
-    } catch (ignored: NumberFormatException) {
-        false
-    }
-}
-
-fun String.isLong(): Boolean {
-    return try {
-        this.toLong()
-        true
-    } catch (ignored: NumberFormatException) {
-        false
-    }
-}
