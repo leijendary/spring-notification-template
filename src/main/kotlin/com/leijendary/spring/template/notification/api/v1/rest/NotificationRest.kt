@@ -2,6 +2,7 @@ package com.leijendary.spring.template.notification.api.v1.rest
 
 import com.leijendary.spring.template.notification.api.v1.service.NotificationService
 import com.leijendary.spring.template.notification.core.util.RequestContext.userIdOrThrow
+import com.leijendary.spring.template.notification.entity.Notification.Status
 import io.swagger.v3.oas.annotations.Operation
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Pageable
@@ -30,4 +31,8 @@ class NotificationRest(private val notificationService: NotificationService) {
     @ResponseStatus(NO_CONTENT)
     @Operation(summary = "Delete the notification from the database.")
     fun delete(@PathVariable id: UUID) = notificationService.delete(userIdOrThrow, id)
+
+    @GetMapping("count")
+    @Operation(summary = "Counts the number of notifications based on the status")
+    fun count(status: Status) = notificationService.count(userIdOrThrow, status)
 }

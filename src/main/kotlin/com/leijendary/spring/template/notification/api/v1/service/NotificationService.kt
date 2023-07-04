@@ -1,9 +1,12 @@
 package com.leijendary.spring.template.notification.api.v1.service
 
 import com.leijendary.spring.template.notification.api.v1.mapper.NotificationMapper
+import com.leijendary.spring.template.notification.api.v1.model.NotificationCountResponse
 import com.leijendary.spring.template.notification.api.v1.model.NotificationResponse
 import com.leijendary.spring.template.notification.client.NotificationClient
+import com.leijendary.spring.template.notification.core.datasource.transactional
 import com.leijendary.spring.template.notification.entity.Notification
+import com.leijendary.spring.template.notification.entity.Notification.Status
 import com.leijendary.spring.template.notification.entity.Notification.Status.READ
 import com.leijendary.spring.template.notification.repository.DeviceRepository
 import com.leijendary.spring.template.notification.repository.NotificationRepository
@@ -33,11 +36,13 @@ class NotificationService(
         val body = notification.body
         val image = notification.image
 
-        deviceRepository.streamByUserId(userId).use { stream ->
-            stream.forEach {
-                notificationClient
-                    .send(it.platform, it.endpoint, title, body, image)
-                    .exceptionally { _ -> deviceRepository.delete(it); null }
+        transactional(true) {
+            deviceRepository.streamByUserId(userId).use { stream ->
+                stream.forEach {
+                    notificationClient
+                        .send(it.platform, it.endpoint, title, body, image)
+                        .exceptionally { _ -> deviceRepository.delete(it); null }
+                }
             }
         }
     }
@@ -54,8 +59,12 @@ class NotificationService(
     fun delete(userId: UUID, id: UUID) {
         notificationRepository
             .findFirstByIdAndUserIdOrThrow(id, userId)
-            .let {
-                notificationRepository.delete(it)
-            }
+            .let { notificationRepository.delete(it) }
+    }
+
+    fun count(userId: UUID, status: Status): NotificationCountResponse {
+        val count = notificationRepository.countByStatus(status)
+
+        return NotificationCountResponse(count, status)
     }
 }
