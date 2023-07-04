@@ -13,9 +13,7 @@ class EmailClient(infoProperties: InfoProperties, private val sesClient: SesClie
     fun send(to: String, template: String, parameters: Map<String, String>) {
         val templatedEmail = SendTemplatedEmailRequest.builder()
             .source(from)
-            .destination {
-                it.toAddresses(to)
-            }
+            .destination { it.toAddresses(to) }
             .template(template)
             .templateData(parameters.toJson())
             .build()
