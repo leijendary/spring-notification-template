@@ -61,7 +61,7 @@ export class TaskDefinitionConstruct extends TaskDefinition {
 
   private container(scope: Construct, image: ContainerImage, logGroup: LogGroup) {
     const auroraCredentials = getAuroraCredentials(scope);
-    const dataSourceCredentials = getDataSourceCredentials(scope);
+    const dataStorageCredentials = getDataStorageCredentials(scope);
 
     this.addContainer(`${id}Container-${environment}`, {
       containerName: name,
@@ -91,8 +91,8 @@ export class TaskDefinitionConstruct extends TaskDefinition {
         SPRING_DATASOURCE_PRIMARY_PASSWORD: auroraCredentials.password,
         SPRING_DATASOURCE_READONLY_USERNAME: auroraCredentials.username,
         SPRING_DATASOURCE_READONLY_PASSWORD: auroraCredentials.password,
-        SPRING_KAFKA_JAAS_OPTIONS_USERNAME: dataSourceCredentials.kafka.username,
-        SPRING_KAFKA_JAAS_OPTIONS_PASSWORD: dataSourceCredentials.kafka.password,
+        SPRING_KAFKA_JAAS_OPTIONS_USERNAME: dataStorageCredentials.kafka.username,
+        SPRING_KAFKA_JAAS_OPTIONS_PASSWORD: dataStorageCredentials.kafka.password,
       },
     });
   }
@@ -170,7 +170,7 @@ const getAuroraCredentials = (scope: Construct) => {
   };
 };
 
-const getDataSourceCredentials = (scope: Construct) => {
+const getDataStorageCredentials = (scope: Construct) => {
   const credential = SecretManager.fromSecretNameV2(
     scope,
     `${id}DataStorageSecret-${environment}`,
