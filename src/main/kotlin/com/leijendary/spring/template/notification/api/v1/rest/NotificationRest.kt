@@ -4,10 +4,8 @@ import com.leijendary.spring.template.notification.api.v1.service.NotificationSe
 import com.leijendary.spring.template.notification.core.util.RequestContext.userIdOrThrow
 import com.leijendary.spring.template.notification.entity.Notification.Status
 import io.swagger.v3.oas.annotations.Operation
-import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import org.springframework.data.domain.Pageable
-import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.web.bind.annotation.*
 import java.util.*
@@ -15,7 +13,6 @@ import java.util.*
 @RestController
 @RequestMapping("/api/v1/notifications")
 @Tag(name = "Notification", description = "Push notifications of the currently logged in user.")
-@SecurityRequirement(name = AUTHORIZATION)
 class NotificationRest(private val notificationService: NotificationService) {
     @GetMapping
     @Operation(summary = "Get the paginated list of the user's push notifications.")
