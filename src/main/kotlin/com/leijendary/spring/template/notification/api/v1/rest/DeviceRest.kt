@@ -5,14 +5,17 @@ import com.leijendary.spring.template.notification.api.v1.model.DeviceRegisterRe
 import com.leijendary.spring.template.notification.api.v1.service.DeviceService
 import com.leijendary.spring.template.notification.core.util.RequestContext.userIdOrThrow
 import io.swagger.v3.oas.annotations.Operation
+import io.swagger.v3.oas.annotations.security.SecurityRequirement
 import io.swagger.v3.oas.annotations.tags.Tag
 import jakarta.validation.Valid
+import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.http.HttpStatus.NO_CONTENT
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/devices")
 @Tag(name = "Device", description = "Device management APIs for the currently logged in user.")
+@SecurityRequirement(name = AUTHORIZATION)
 class DeviceRest(private val deviceService: DeviceService) {
     @PostMapping
     @Operation(summary = "Register the device for push notifications.")
