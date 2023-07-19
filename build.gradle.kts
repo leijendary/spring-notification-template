@@ -39,7 +39,7 @@ dependencies {
     implementation(kotlin("reflect"))
     implementation(kotlin("stdlib-jdk8"))
     testImplementation(kotlin("test"))
-    
+
     // Spring Boot Starter
     implementation("org.springframework.boot:spring-boot-starter-actuator")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -62,7 +62,6 @@ dependencies {
 
     // AWS
     implementation("io.awspring.cloud:spring-cloud-aws-starter")
-    implementation("io.awspring.cloud:spring-cloud-aws-starter-ses")
     implementation("io.awspring.cloud:spring-cloud-aws-starter-sns")
 
     // Database
@@ -88,6 +87,12 @@ dependencies {
     implementation("io.micrometer:micrometer-tracing-bridge-otel")
     implementation("io.opentelemetry:opentelemetry-exporter-otlp")
     implementation("net.ttddyy.observation:datasource-micrometer-spring-boot:1.0.2")
+
+    // SendGrid
+    implementation("com.sendgrid:sendgrid-java:4.9.3")
+
+    // Twilio
+    implementation("com.twilio.sdk:twilio:9.9.0")
 
     // Test
     testImplementation("org.mockito.kotlin:mockito-kotlin:4.1.0")

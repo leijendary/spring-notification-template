@@ -12,5 +12,6 @@ import org.springframework.context.annotation.Configuration
     DataSourceReadonlyProperties::class,
     InfoProperties::class,
     KafkaTopicProperties::class,
+    TwilioProperties::class
 )
 class PropertiesConfiguration 

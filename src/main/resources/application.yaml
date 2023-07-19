@@ -30,6 +30,11 @@ auth:
   system:
     principal: System
 
+twilio:
+  accountSid:
+  authToken:
+  phone:
+
 spring:
   application:
     name: \${info.app.name}
@@ -115,6 +120,8 @@ spring:
     basename: messages.access, messages.error, messages.validation
   mvc:
     throwExceptionIfNoHandlerFound: true
+  sendgrid:
+    apiKey:
   web:
     resources:
       addMappings: false

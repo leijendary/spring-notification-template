@@ -62,6 +62,7 @@ export class TaskDefinitionConstruct extends TaskDefinition {
   private container(scope: Construct, image: ContainerImage, logGroup: LogGroup) {
     const auroraCredentials = getAuroraCredentials(scope);
     const dataStorageCredentials = getDataStorageCredentials(scope);
+    const integrationCredentials = getIntegrationCredentials(scope);
 
     this.addContainer(`${id}Container-${environment}`, {
       containerName: name,
@@ -93,6 +94,9 @@ export class TaskDefinitionConstruct extends TaskDefinition {
         SPRING_DATASOURCE_READONLY_PASSWORD: auroraCredentials.password,
         SPRING_KAFKA_JAAS_OPTIONS_USERNAME: dataStorageCredentials.kafka.username,
         SPRING_KAFKA_JAAS_OPTIONS_PASSWORD: dataStorageCredentials.kafka.password,
+        SPRING_SENDGRID_API_KEY: integrationCredentials.sendgrid.apiKey,
+        TWILIO_ACCOUNT_SID: integrationCredentials.twilio.accountSid,
+        TWILIO_AUTH_TOKEN: integrationCredentials.twilio.authToken,
       },
     });
   }
@@ -181,6 +185,24 @@ const getDataStorageCredentials = (scope: Construct) => {
     kafka: {
       username: Secret.fromSecretsManager(credential, "kafka.username"),
       password: Secret.fromSecretsManager(credential, "kafka.password"),
+    },
+  };
+};
+
+const getIntegrationCredentials = (scope: Construct) => {
+  const credential = SecretManager.fromSecretNameV2(
+    scope,
+    `${id}IntegrationSecret-${environment}`,
+    `integration-${environment}`
+  );
+
+  return {
+    sendgrid: {
+      apiKey: Secret.fromSecretsManager(credential, "sendgrid.apiKey"),
+    },
+    twilio: {
+      accountSid: Secret.fromSecretsManager(credential, "twilio.accountSid"),
+      authToken: Secret.fromSecretsManager(credential, "twilio.authToken"),
     },
   };
 };

@@ -23,11 +23,8 @@ class NotificationConsumer(
     @KafkaListener(topics = ["\${spring.kafka.topic.$NOTIFICATION_EMAIL.name}"])
     fun email(json: String) {
         val emailMessage: EmailMessage = json.toClass()
-        val to = emailMessage.to
-        val template = emailMessage.template
-        val parameters = emailMessage.parameters
 
-        emailClient.send(to, template, parameters)
+        emailClient.send(emailMessage.to, emailMessage.templateId, emailMessage.parameters)
     }
 
     @KafkaListener(topics = ["\${spring.kafka.topic.$NOTIFICATION_PUSH.name}"])
@@ -41,9 +38,7 @@ class NotificationConsumer(
     @KafkaListener(topics = ["\${spring.kafka.topic.$NOTIFICATION_SMS.name}"])
     fun sms(json: String) {
         val smsMessage: SmsMessage = json.toClass()
-        val to = smsMessage.to
-        val message = smsMessage.message
 
-        smsClient.send(to, message)
+        smsClient.send(smsMessage.to, smsMessage.message)
     }
 }

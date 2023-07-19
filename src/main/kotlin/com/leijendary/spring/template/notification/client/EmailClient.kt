@@ -1,23 +1,43 @@
 package com.leijendary.spring.template.notification.client
 
 import com.leijendary.spring.template.notification.core.config.properties.InfoProperties
-import com.leijendary.spring.template.notification.core.extension.toJson
+import com.leijendary.spring.template.notification.core.extension.logger
+import com.sendgrid.Method.POST
+import com.sendgrid.Request
+import com.sendgrid.SendGrid
+import com.sendgrid.helpers.mail.Mail
+import com.sendgrid.helpers.mail.objects.Email
+import com.sendgrid.helpers.mail.objects.Personalization
+import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Component
-import software.amazon.awssdk.services.ses.SesClient
-import software.amazon.awssdk.services.ses.model.SendTemplatedEmailRequest
 
 @Component
-class EmailClient(infoProperties: InfoProperties, private val sesClient: SesClient) {
-    private val from = infoProperties.api.contact!!.email
+class EmailClient(infoProperties: InfoProperties, private val sendGrid: SendGrid) {
+    private val log = logger()
+    private val email = Email(infoProperties.api.contact!!.email, infoProperties.api.contact!!.name)
 
-    fun send(to: String, template: String, parameters: Map<String, String>) {
-        val templatedEmail = SendTemplatedEmailRequest.builder()
-            .source(from)
-            .destination { it.toAddresses(to) }
-            .template(template)
-            .templateData(parameters.toJson())
-            .build()
+    fun send(to: String, templateId: String, parameters: Map<String, String>) {
+        val personalization = Personalization().apply { addTo(Email(to)) }
 
-        sesClient.sendTemplatedEmail(templatedEmail)
+        parameters.forEach { (key, value) -> personalization.addDynamicTemplateData(key, value) }
+
+        val mail = Mail().apply {
+            from = email
+            this.templateId = templateId
+            addPersonalization(personalization)
+        }
+        val request = Request().apply {
+            method = POST
+            endpoint = "mail/send"
+            body = mail.build()
+        }
+        val response = sendGrid.api(request)
+        val status = HttpStatus.valueOf(response.statusCode)
+
+        if (status.isError) {
+            log.error("Email error: ${response.statusCode} ${response.body}")
+        } else {
+            log.info("Email response: ${response.statusCode} ${response.body}")
+        }
     }
 }
