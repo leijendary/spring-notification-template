@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*
 @Tag(name = "Device", description = "Device management APIs for the currently logged in user.")
 class DeviceRest(private val deviceService: DeviceService) {
     @PostMapping
+    @ResponseStatus(NO_CONTENT)
     @Operation(summary = "Register the device for push notifications.")
     fun register(@Valid @RequestBody request: DeviceRegisterRequest) {
         deviceService.register(userIdOrThrow, request)
