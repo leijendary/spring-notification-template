@@ -7,8 +7,8 @@ class AwsSnsProperties {
     var platform = Platform()
 
     inner class Platform {
-        var apple = Config()
         var firebase = Config()
+        var ios = Config()
     }
 
     inner class Config {

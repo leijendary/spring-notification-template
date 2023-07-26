@@ -42,9 +42,9 @@ spring:
     aws:
       sns:
         platform:
-          apple:
-            arn:
           firebase:
+            arn:
+          ios:
             arn:
   data:
     jdbc:

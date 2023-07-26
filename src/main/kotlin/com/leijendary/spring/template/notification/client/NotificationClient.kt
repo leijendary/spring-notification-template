@@ -71,7 +71,7 @@ class NotificationClient(private val awsSnsProperties: AwsSnsProperties, private
 
     private fun getTopicArn(platform: Platform) = when (platform) {
         ANDROID -> awsSnsProperties.platform.firebase.arn
-        IOS -> awsSnsProperties.platform.apple.arn
+        IOS -> awsSnsProperties.platform.ios.arn
         else -> null
     }
 

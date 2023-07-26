@@ -15,11 +15,18 @@ import { PolicyDocument, PolicyStatement, Role, ServicePrincipal } from "aws-cdk
 import { LogGroup, RetentionDays } from "aws-cdk-lib/aws-logs";
 import { DatabaseSecret } from "aws-cdk-lib/aws-rds";
 import { Secret as SecretManager } from "aws-cdk-lib/aws-secretsmanager";
+import { ITopic } from "aws-cdk-lib/aws-sns";
 import { Construct } from "constructs";
 import env, { isProd } from "../env";
 
+type SnsTopic = {
+  firebase: ITopic;
+  ios: ITopic;
+};
+
 type TaskDefinitionConstructProps = {
   repositoryArn: string;
+  snsTopic: SnsTopic;
 };
 
 const environment = env.environment;
@@ -32,7 +39,7 @@ const logPrefix = "/ecs/fargate";
 
 export class TaskDefinitionConstruct extends TaskDefinition {
   constructor(scope: Construct, props: TaskDefinitionConstructProps) {
-    const { repositoryArn } = props;
+    const { repositoryArn, snsTopic } = props;
     const memoryMiB = isProd() ? "2 GB" : "0.5 GB";
     const cpu = isProd() ? "1 vCPU" : "0.25 vCPU";
     const repository = getRepository(scope, repositoryArn);
@@ -55,11 +62,12 @@ export class TaskDefinitionConstruct extends TaskDefinition {
 
     super(scope, `${id}TaskDefinition-${environment}`, config);
 
-    this.container(scope, image, logGroup);
+    this.container(scope, image, snsTopic, logGroup);
     this.trustPolicy(taskRole, executionRole);
+    this.grantTopicAccess(taskRole, snsTopic);
   }
 
-  private container(scope: Construct, image: ContainerImage, logGroup: LogGroup) {
+  private container(scope: Construct, image: ContainerImage, snsTopic: SnsTopic, logGroup: LogGroup) {
     const auroraCredentials = getAuroraCredentials(scope);
     const dataStorageCredentials = getDataStorageCredentials(scope);
     const integrationCredentials = getIntegrationCredentials(scope);
@@ -86,6 +94,8 @@ export class TaskDefinitionConstruct extends TaskDefinition {
       environment: {
         SPRING_PROFILES_ACTIVE: environment,
         AWS_EC2_METADATA_DISABLED: "true",
+        SPRING_CLOUD_AWS_SNS_PLATFORM_FIREBASE_ARN: snsTopic.firebase.topicArn,
+        SPRING_CLOUD_AWS_SNS_PLATFORM_IOS_ARN: snsTopic.ios.topicArn,
       },
       secrets: {
         SPRING_DATASOURCE_PRIMARY_USERNAME: auroraCredentials.username,
@@ -109,6 +119,18 @@ export class TaskDefinitionConstruct extends TaskDefinition {
 
     taskRole.addToPolicy(trustPolicy);
     executionRole.addToPolicy(trustPolicy);
+  }
+
+  private grantTopicAccess(role: Role, snsTopic: SnsTopic) {
+    const createEndpointPolicy = new PolicyStatement({
+      actions: ["sns:CreatePlatformEndpoint"],
+      resources: [snsTopic.firebase.topicArn, snsTopic.ios.topicArn],
+    });
+
+    role.addToPolicy(createEndpointPolicy);
+
+    snsTopic.firebase.grantPublish(role);
+    snsTopic.ios.grantPublish(role);
   }
 }
 
