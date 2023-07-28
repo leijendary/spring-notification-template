@@ -25,7 +25,7 @@ class NotificationService(
     fun list(userId: UUID, pageable: Pageable): Page<NotificationResponse> {
         return notificationRepository
             .findByUserId(userId, pageable)
-            .map { NotificationMapper.INSTANCE.toResponse(it) }
+            .map(NotificationMapper.INSTANCE::toResponse)
     }
 
     fun create(notification: Notification) {
@@ -59,7 +59,7 @@ class NotificationService(
     fun delete(userId: UUID, id: UUID) {
         notificationRepository
             .findFirstByIdAndUserIdOrThrow(id, userId)
-            .let { notificationRepository.delete(it) }
+            .let(notificationRepository::delete)
     }
 
     fun count(userId: UUID, status: Status): NotificationCountResponse {
