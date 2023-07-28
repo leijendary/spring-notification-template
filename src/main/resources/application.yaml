@@ -47,9 +47,6 @@ spring:
           ios:
             arn:
   data:
-    jdbc:
-      repositories:
-        enabled: false
     web:
       pageable:
         maxPageSize: 100
