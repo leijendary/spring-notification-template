@@ -6,7 +6,6 @@ import java.util.*
 
 data class NotificationResponse(
     val id: UUID,
-    val userId: UUID,
     val title: String,
     val body: String,
     val image: String?,
