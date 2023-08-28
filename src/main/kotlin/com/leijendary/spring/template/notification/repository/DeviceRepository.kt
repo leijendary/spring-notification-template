@@ -20,7 +20,7 @@ interface DeviceRepository : JpaRepository<Device, Long> {
     fun findFirstByUserIdAndTokenOrThrow(userId: UUID, token: String): Device {
         return findFirstByUserIdAndToken(userId, token) ?: throw ResourceNotFoundException(sourceToken, token)
     }
-    
+
     @Transactional(readOnly = true)
     fun streamByUserId(userId: UUID): Stream<Device>
 }
