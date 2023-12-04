@@ -16,7 +16,7 @@ class EmailClient(infoProperties: InfoProperties, private val sendGrid: SendGrid
     private val log = logger()
     private val email = Email(infoProperties.api.contact!!.email, infoProperties.api.contact!!.name)
 
-    fun send(to: String, templateId: String, parameters: Map<String, String>) {
+    fun send(to: String, templateId: String, parameters: Map<String, Any>) {
         val personalization = Personalization().apply { addTo(Email(to)) }
 
         parameters.forEach { (key, value) -> personalization.addDynamicTemplateData(key, value) }
